@@ -13,6 +13,13 @@ LIBS+= -L"D:\ObjectARX 2022\lib-x64" -lacad
 LIBS+= -L"D:\ObjectARX 2022\lib-x64" -lac1st24
 LIBS+= -L"D:\ObjectARX 2022\lib-x64" -laccore
 
+#if _MSC_VER >= 1920   // ObjectARXSDK 2021以上
+#pragma comment(lib, "AcPal.lib")
+#pragma comment(lib, "acgeoment.lib")
+LIBS+= -L"D:\ObjectARX 2022\lib-x64" -lAcPal
+LIBS+= -L"D:\ObjectARX 2022\lib-x64" -laccore
+
+
 #DEF_FILE
 DEF_FILE += $$PWD/AcRxDefault.def
 
@@ -35,15 +42,15 @@ QT       += qml
 TEMPLATE = lib
 
 SOURCES += this_main.cpp \
-    form.cpp
+    dialog.cpp
 
 RESOURCES += \
     images.qrc
 
-DESTDIR = $$PWD/../../release/Autocad2022
+DESTDIR =release/Autocad2022
 
 FORMS += \
-    form.ui
+    dialog.ui
 
 HEADERS += \
-    form.h
+    dialog.h

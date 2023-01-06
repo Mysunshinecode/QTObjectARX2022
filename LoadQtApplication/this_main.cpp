@@ -2,8 +2,9 @@
 #pragma warning (disable: 4189 4100 )
 #include <Windows.h>
 #include <arxHeaders.h>
+#include "Dialog.h"
 #pragma warning( pop)
-
+#include<QtWidgets/QApplication>
 #include <string_view>
 
 using namespace std::string_literals;
@@ -12,16 +13,17 @@ using namespace std::string_literals;
 #include <QtQml>
 #include<QMessageBox>
 
-inline void HellowWorld() {
-	acutPrintf(LR"(Hellow Word!
-)");
-}
+
 inline void HellowWorldARX() {
 //    QJSEngine varE;
 //    varE.evaluate( QString("1+1") );
     {
         QMessageBox varBox ;
         varBox.setText(("Hellow World!"));
+        QIcon varImage{ QString(":/png/this.png") };
+
+//        varBox.setIconPixmap(QPixmap(QString(":/png/this.png")));
+
         varBox.exec() ;
     }
     auto varDataTime = QDateTime::currentDateTime().toString().toStdWString();
@@ -53,6 +55,17 @@ const std::string qtApplicationPath ="123";/*!!!*/
 	}
 }/*namespace*/
 
+inline void ShowQtWindow() {
+
+        auto varQtApplication =
+            new QApplication(_cpp_private::getArgc(), _cpp_private::getArgv());
+        (void)varQtApplication;
+        Dialog w;
+        w.show();
+        varQtApplication->exec();
+            //	acutPrintf(LR"(Hellow Word!
+            //)");
+    }
 extern "C" AcRx::AppRetCode
 acrxEntryPoint(AcRx::AppMsgCode msg, void* pkt) {
 	switch (msg) {
@@ -64,7 +77,7 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* pkt) {
 			if (qApp == nullptr) {
 				/*create the qt applicaton and never destory it*/
 				auto varQtApplication =
-					new QApplication(_cpp_private::getArgc(), _cpp_private::getArgv());
+                    new QApplication(_cpp_private::getArgc(), _cpp_private::getArgv());
 				(void)varQtApplication;
 			}
 			{
@@ -82,12 +95,19 @@ acrxEntryPoint(AcRx::AppMsgCode msg, void* pkt) {
             L"HellowWorld",
 			ACRX_CMD_MODAL,
             &HellowWorldARX);
+        acedRegCmds->addCommand(
+            L"SSTD_GLOBAL_CMD_GROUP",
+            L"ShowQtWindow",
+            L"ShowQtWindow",
+            ACRX_CMD_MODAL,
+            &ShowQtWindow);
 	}break;
 	case AcRx::kUnloadAppMsg: {}break;
 	default:break;
 	}
 	return AcRx::kRetOK;
 }
+
 
 /********************************/
 
