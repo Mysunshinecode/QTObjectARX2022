@@ -60,9 +60,13 @@ inline void ShowQtWindow() {
         auto varQtApplication =
             new QApplication(_cpp_private::getArgc(), _cpp_private::getArgv());
         (void)varQtApplication;
-        Dialog w;
-        w.show();
-        varQtApplication->exec();
+       // Dialog w;
+       // w.show();
+        Dialog *p = new Dialog;
+        p->setAttribute(Qt::WA_DeleteOnClose);// 应用控件时自动释放
+        //p->setWindowTitle("非模态对话框");
+        p->show();
+        //varQtApplication->exec();
             //	acutPrintf(LR"(Hellow Word!
             //)");
     }
